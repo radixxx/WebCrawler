@@ -16,4 +16,32 @@ public class WebCrawler {
     }
 
 
+    public void getPageLinks(String URL) {
+
+        //Check if you have already crawled the URLs
+        //(we are intentionally not checking for duplicate content in this example)
+        if (!links.contains(URL)) {
+            try {
+                //(i) If not add it to the index
+                if (links.add(URL)) {
+                    System.out.println(URL);
+                }
+
+                // Fetch the HTML code
+                Document document = Jsoup.connect(URL).get();
+                // Parse the HTML to extract links to other URLs
+                Elements linksOnPage = document.select("a[href]");
+
+                // For each extracted URL... go back to Step (loop)
+                for (Element page : linksOnPage) {
+                    getPageLinks(page.attr("abs:href"));
+                }
+            } catch (IOException e) {
+                System.err.println("For '" + URL + "': " + e.getMessage());
+            }
+        }
+    }
+
+
+
 }
