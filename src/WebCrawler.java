@@ -42,6 +42,10 @@ public class WebCrawler {
         }
     }
 
+    public static void main(String[] args) {
+        //Pick a URL from the frontier
+        new WebCrawler().getPageLinks("https://point.md/ru/");
+    }
 
 
 }
