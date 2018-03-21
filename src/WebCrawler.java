@@ -9,7 +9,11 @@ import java.util.HashSet;
 
 public class WebCrawler {
 
+    private HashSet<String> links;
 
+    public WebCrawler() {
+        links = new HashSet<String>();
+    }
 
 
 }
