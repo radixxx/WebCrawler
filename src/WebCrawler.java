@@ -10,7 +10,7 @@ import java.util.HashSet;
 public class WebCrawler {
 
     private HashSet<String> links;
-    private static final int MAX_DEPTH = 2;
+    private static final int MAX_DEPTH = 5;
 
     public WebCrawler() {
         links = new HashSet<String>();
@@ -19,7 +19,7 @@ public class WebCrawler {
 
     public void getPageLinks(String URL, int depth) {
         if ((!links.contains(URL) && (depth < MAX_DEPTH))) {
-            System.out.println(">> Depth: " + depth + " [" + URL + "]");
+            System.out.println("Глубина поиска Depth >>  " + depth + " [" + URL + "]");
             try {
                 links.add(URL);
 
@@ -30,6 +30,8 @@ public class WebCrawler {
                 for (Element page : linksOnPage) {
                     getPageLinks(page.attr("abs:href"), depth);
                 }
+
+                //Error werification + messege
             } catch (IOException e) {
                 System.err.println("For '" + URL + "': " + e.getMessage());
             }
@@ -39,7 +41,7 @@ public class WebCrawler {
     public static void main(String[] args) {
         //Pick a URL from the frontier
         //new WebCrawler().getPageLinks("https://point.md/ru/");
-        new WebCrawler().getPageLinks("https://www.youtube.com/",-2);
+        new WebCrawler().getPageLinks("https://www.youtube.com/",0);
     }
 
 
