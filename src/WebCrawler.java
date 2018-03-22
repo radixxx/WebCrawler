@@ -10,31 +10,25 @@ import java.util.HashSet;
 public class WebCrawler {
 
     private HashSet<String> links;
+    private static final int MAX_DEPTH = 2;
 
     public WebCrawler() {
         links = new HashSet<String>();
     }
 
 
-    public void getPageLinks(String URL) {
-
-        //Check if you have already crawled the URLs
-        //(we are intentionally not checking for duplicate content in this example)
-        if (!links.contains(URL)) {
+    public void getPageLinks(String URL, int depth) {
+        if ((!links.contains(URL) && (depth < MAX_DEPTH))) {
+            System.out.println(">> Depth: " + depth + " [" + URL + "]");
             try {
-                //(i) If not add it to the index
-                if (links.add(URL)) {
-                    System.out.println(URL);
-                }
+                links.add(URL);
 
-                // Fetch the HTML code
                 Document document = Jsoup.connect(URL).get();
-                // Parse the HTML to extract links to other URLs
                 Elements linksOnPage = document.select("a[href]");
 
-                // For each extracted URL... go back to Step (loop)
+                depth++;
                 for (Element page : linksOnPage) {
-                    getPageLinks(page.attr("abs:href"));
+                    getPageLinks(page.attr("abs:href"), depth);
                 }
             } catch (IOException e) {
                 System.err.println("For '" + URL + "': " + e.getMessage());
@@ -44,7 +38,8 @@ public class WebCrawler {
 
     public static void main(String[] args) {
         //Pick a URL from the frontier
-        new WebCrawler().getPageLinks("https://point.md/ru/");
+        //new WebCrawler().getPageLinks("https://point.md/ru/");
+        new WebCrawler().getPageLinks("https://www.youtube.com/",-2);
     }
 
 
